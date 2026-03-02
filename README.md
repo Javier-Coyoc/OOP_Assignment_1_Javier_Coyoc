@@ -10,3 +10,4 @@ CREATE DATABASE eventdb;
 - run the command: npx tsc
 - run: 'node main.js' to start the server
 - Open the index.html file in your web browser an test the system by adding student/events
+- When inputting the ID for students/events use the format 'S006' for students and 'E005' for events
