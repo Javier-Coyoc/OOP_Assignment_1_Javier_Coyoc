@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Registration</title>
+
+</head>
+<body>
+
+<h2>Event Registration System</h2>
+
+<!-- ================= STUDENTS ================= -->
+<h3>Add Student</h3>
+
+<input id="student_id" placeholder="Student ID" required>
+<input id="first_name" placeholder="First Name" required>
+<input id="last_name" placeholder="Last Name" required>
+<input id="department" placeholder="Department" required>
+
+<button onclick="addStudent()">Add Student</button>
+<button onclick="getStudents()">View Students</button>
+
+<pre id="students_output"></pre>
+
+
+<!-- ================= EVENTS ================= -->
+<h3>Add Event</h3>
+
+<input id="event_id" placeholder="Event ID" required>
+<input id="event_name" placeholder="Event Name" required>
+<input id="event_date" placeholder="YYYY-MM-DD" required>
+<input id="max_participants" placeholder="Max Participants" required>
+
+<button onclick="addEvent()">Add Event</button>
+<button onclick="getEvents()">View Events</button>
+
+<pre id="events_output"></pre>
+
+
+<!-- ================= REGISTER ================= -->
+<h3>Register Student For Event</h3>
+
+<input id="reg_student_id" placeholder="Student ID" required>
+<input id="reg_event_id" placeholder="Event ID" required>
+
+<button onclick="registerStudent()">Register</button>
+
+<pre id="register_output"></pre>
+
+
+<script>
+
+const API = "http://localhost:3000/api";
+
+/* ---------- STUDENTS ---------- */
+
+async function addStudent() {
+    const data = {
+        student_id: document.getElementById("student_id").value,
+        first_name: document.getElementById("first_name").value,
+        last_name: document.getElementById("last_name").value,
+        department: document.getElementById("department").value
+    };
+
+    const res = await fetch(`${API}/students`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    document.getElementById("students_output").textContent =
+        await res.text();
+}
+
+async function getStudents() {
+    const res = await fetch(`${API}/students`);
+    const data = await res.json();
+
+    document.getElementById("students_output").textContent =
+        JSON.stringify(data, null, 2);
+}
+
+
+/* ---------- EVENTS ---------- */
+
+async function addEvent() {
+    const data = {
+        event_id: document.getElementById("event_id").value,
+        event_name: document.getElementById("event_name").value,
+        event_date: document.getElementById("event_date").value,
+        max_participants: document.getElementById("max_participants").value
+    };
+
+    const res = await fetch(`${API}/events`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    document.getElementById("events_output").textContent =
+        await res.text();
+}
+
+async function getEvents() {
+    const res = await fetch(`${API}/events`);
+    const data = await res.json();
+
+    document.getElementById("events_output").textContent =
+        JSON.stringify(data, null, 2);
+}
+
+
+/* ---------- REGISTER ---------- */
+
+async function registerStudent() {
+    const data = {
+        student_id: document.getElementById("reg_student_id").value,
+        event_id: document.getElementById("reg_event_id").value
+    };
+
+    const res = await fetch(`${API}/events/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    document.getElementById("register_output").textContent =
+        await res.text();
+}
+
+</script>
+
+</body>
+</html>
